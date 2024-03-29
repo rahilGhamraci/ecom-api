@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 5.2.0
+- https://www.phpmyadmin.net
+-
+- Hôte : 127.0.0.1:3306
+- Généré le : ven. 29 mars 2024 à 14:13
+- Version du serveur : 8.0.31
+- Version de PHP : 8.0.26
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="ecom" collation="utf8mb4_0900_ai_ci" charset="utf8mb4">
+            <pma:table name="categories">
+                CREATE TABLE `categories` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `nom` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="clients">
+                CREATE TABLE `clients` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `nom` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `prenom` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `tel` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `adresse` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `user_id` bigint unsigned NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `clients_user_id_foreign` (`user_id`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="commandes">
+                CREATE TABLE `commandes` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `etat` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `client_id` bigint unsigned NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `commandes_client_id_foreign` (`client_id`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="factures">
+                CREATE TABLE `factures` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `montant_total` decimal(8,2) NOT NULL,
+                  `numero_carte` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `mode_paiement` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `commande_id` bigint unsigned NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  `file_path` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `factures_commande_id_foreign` (`commande_id`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="failed_jobs">
+                CREATE TABLE `failed_jobs` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `uuid` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="migrations">
+                CREATE TABLE `migrations` (
+                  `id` int unsigned NOT NULL AUTO_INCREMENT,
+                  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `batch` int NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="password_resets">
+                CREATE TABLE `password_resets` (
+                  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  KEY `password_resets_email_index` (`email`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="personal_access_tokens">
+                CREATE TABLE `personal_access_tokens` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `tokenable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `tokenable_id` bigint unsigned NOT NULL,
+                  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `abilities` text COLLATE utf8mb4_unicode_ci,
+                  `last_used_at` timestamp NULL DEFAULT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+                  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="produits">
+                CREATE TABLE `produits` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `nom` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `description` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                  `prix` decimal(8,2) NOT NULL,
+                  `img_path` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                  `categorie_id` bigint unsigned NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  `marque` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `quantite` int NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `produits_categorie_id_foreign` (`categorie_id`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="produit_commandes">
+                CREATE TABLE `produit_commandes` (
+                  `commande_id` bigint unsigned NOT NULL,
+                  `produit_id` bigint unsigned NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  `quantite` int NOT NULL,
+                  PRIMARY KEY (`commande_id`,`produit_id`),
+                  KEY `produit_commandes_produit_id_foreign` (`produit_id`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+            <pma:table name="users">
+                CREATE TABLE `users` (
+                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `email_verified_at` timestamp NULL DEFAULT NULL,
+                  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  `role` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `users_email_unique` (`email`)
+                ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+
+    <!--
+    - Base de données : 'ecom'
+    -->
+    <database name="ecom">
+        <!-- Table categories -->
+        <table name="categories">
+            <column name="id">2</column>
+            <column name="nom">Vêtements et accessoires</column>
+            <column name="created_at">2024-03-27 12:12:08</column>
+            <column name="updated_at">2024-03-27 12:12:08</column>
+        </table>
+        <table name="categories">
+            <column name="id">3</column>
+            <column name="nom">Électronique grand public</column>
+            <column name="created_at">2024-03-27 12:12:21</column>
+            <column name="updated_at">2024-03-27 12:12:21</column>
+        </table>
+        <table name="categories">
+            <column name="id">4</column>
+            <column name="nom">Alimentation et boissons</column>
+            <column name="created_at">2024-03-27 12:12:45</column>
+            <column name="updated_at">2024-03-27 12:12:45</column>
+        </table>
+        <table name="categories">
+            <column name="id">5</column>
+            <column name="nom">Meubles et décoration d'intérieur</column>
+            <column name="created_at">2024-03-27 12:13:00</column>
+            <column name="updated_at">2024-03-27 12:13:00</column>
+        </table>
+        <table name="categories">
+            <column name="id">6</column>
+            <column name="nom">Articles de bureau et fournitures scolaires</column>
+            <column name="created_at">2024-03-27 12:13:16</column>
+            <column name="updated_at">2024-03-27 12:13:16</column>
+        </table>
+        <table name="categories">
+            <column name="id">7</column>
+            <column name="nom">Livres et médias</column>
+            <column name="created_at">2024-03-27 12:13:44</column>
+            <column name="updated_at">2024-03-27 12:13:44</column>
+        </table>
+        <!-- Table clients -->
+        <table name="clients">
+            <column name="id">1</column>
+            <column name="nom">Hadjimi</column>
+            <column name="prenom">Lilia</column>
+            <column name="tel">0522222222</column>
+            <column name="adresse">alger</column>
+            <column name="user_id">1</column>
+            <column name="created_at">2024-03-27 15:55:07</column>
+            <column name="updated_at">2024-03-27 15:55:07</column>
+        </table>
+        <table name="clients">
+            <column name="id">2</column>
+            <column name="nom">Benzemrane</column>
+            <column name="prenom">Lydia</column>
+            <column name="tel">0533333333</column>
+            <column name="adresse">alger</column>
+            <column name="user_id">2</column>
+            <column name="created_at">2024-03-27 16:03:44</column>
+            <column name="updated_at">2024-03-27 16:03:44</column>
+        </table>
+        <table name="clients">
+            <column name="id">3</column>
+            <column name="nom">Ferchichi</column>
+            <column name="prenom">Manel</column>
+            <column name="tel">0511111111</column>
+            <column name="adresse">alger</column>
+            <column name="user_id">3</column>
+            <column name="created_at">2024-03-27 16:14:53</column>
+            <column name="updated_at">2024-03-27 16:14:53</column>
+        </table>
+        <!-- Table commandes -->
+        <table name="commandes">
+            <column name="id">2</column>
+            <column name="etat">En attente</column>
+            <column name="client_id">3</column>
+            <column name="created_at">2024-03-27 21:12:17</column>
+            <column name="updated_at">2024-03-27 21:12:17</column>
+        </table>
+        <table name="commandes">
+            <column name="id">6</column>
+            <column name="etat">En attente</column>
+            <column name="client_id">3</column>
+            <column name="created_at">2024-03-28 10:28:12</column>
+            <column name="updated_at">2024-03-28 10:28:12</column>
+        </table>
+        <table name="commandes">
+            <column name="id">4</column>
+            <column name="etat">En attente</column>
+            <column name="client_id">3</column>
+            <column name="created_at">2024-03-27 21:14:09</column>
+            <column name="updated_at">2024-03-27 21:14:09</column>
+        </table>
+        <table name="commandes">
+            <column name="id">5</column>
+            <column name="etat">En attente</column>
+            <column name="client_id">3</column>
+            <column name="created_at">2024-03-27 21:18:30</column>
+            <column name="updated_at">2024-03-27 21:18:30</column>
+        </table>
+        <!-- Table factures -->
+        <table name="factures">
+            <column name="id">2</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 11:41:56</column>
+            <column name="updated_at">2024-03-28 11:41:56</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">3</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 11:44:40</column>
+            <column name="updated_at">2024-03-28 11:44:40</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">4</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 11:45:55</column>
+            <column name="updated_at">2024-03-28 11:45:55</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">5</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 11:46:26</column>
+            <column name="updated_at">2024-03-28 11:46:26</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">6</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 11:49:38</column>
+            <column name="updated_at">2024-03-28 11:49:38</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">7</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:12:13</column>
+            <column name="updated_at">2024-03-28 13:12:13</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">8</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:16:28</column>
+            <column name="updated_at">2024-03-28 13:16:28</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">9</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:18:03</column>
+            <column name="updated_at">2024-03-28 13:18:03</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">10</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:19:37</column>
+            <column name="updated_at">2024-03-28 13:19:37</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">11</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:22:43</column>
+            <column name="updated_at">2024-03-28 13:22:43</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">12</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:24:37</column>
+            <column name="updated_at">2024-03-28 13:24:37</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">13</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:37:55</column>
+            <column name="updated_at">2024-03-28 13:37:55</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">14</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:38:55</column>
+            <column name="updated_at">2024-03-28 13:38:55</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">15</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:39:16</column>
+            <column name="updated_at">2024-03-28 13:39:16</column>
+            <column name="file_path">NULL</column>
+        </table>
+        <table name="factures">
+            <column name="id">16</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 13:57:57</column>
+            <column name="updated_at">2024-03-28 13:58:03</column>
+            <column name="file_path">public/pdf/facture_6605776b6590c.pdf</column>
+        </table>
+        <table name="factures">
+            <column name="id">17</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 14:09:05</column>
+            <column name="updated_at">2024-03-28 14:09:11</column>
+            <column name="file_path">public/pdf/facture_66057a06e3aa0.pdf</column>
+        </table>
+        <table name="factures">
+            <column name="id">18</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 14:09:57</column>
+            <column name="updated_at">2024-03-28 14:10:02</column>
+            <column name="file_path">public/pdf/facture_66057a3a5c488.pdf</column>
+        </table>
+        <table name="factures">
+            <column name="id">19</column>
+            <column name="montant_total">184.99</column>
+            <column name="numero_carte">XXXX-XXXX-XXXX-1234</column>
+            <column name="mode_paiement">Carte de crédit</column>
+            <column name="commande_id">6</column>
+            <column name="created_at">2024-03-28 14:10:50</column>
+            <column name="updated_at">2024-03-28 14:10:55</column>
+            <column name="file_path">public/pdf/facture_66057a6f305fb.pdf</column>
+        </table>
+        <!-- Table failed_jobs -->
+        <!-- Table migrations -->
+        <table name="migrations">
+            <column name="id">1</column>
+            <column name="migration">2014_10_12_000000_create_users_table</column>
+            <column name="batch">1</column>
+        </table>
+        <table name="migrations">
+            <column name="id">2</column>
+            <column name="migration">2014_10_12_100000_create_password_resets_table</column>
+            <column name="batch">1</column>
+        </table>
+        <table name="migrations">
+            <column name="id">3</column>
+            <column name="migration">2019_08_19_000000_create_failed_jobs_table</column>
+            <column name="batch">1</column>
+        </table>
+        <table name="migrations">
+            <column name="id">4</column>
+            <column name="migration">2019_12_14_000001_create_personal_access_tokens_table</column>
+            <column name="batch">1</column>
+        </table>
+        <table name="migrations">
+            <column name="id">5</column>
+            <column name="migration">2024_03_27_104835_create_categories_table</column>
+            <column name="batch">1</column>
+        </table>
+        <table name="migrations">
+            <column name="id">6</column>
+            <column name="migration">2024_03_27_111637_create_produits_table</column>
+            <column name="batch">2</column>
+        </table>
+        <table name="migrations">
+            <column name="id">7</column>
+            <column name="migration">2024_03_27_114602_add_marque_to_produits_table</column>
+            <column name="batch">3</column>
+        </table>
+        <table name="migrations">
+            <column name="id">8</column>
+            <column name="migration">2024_03_27_141032_create_clients_table</column>
+            <column name="batch">4</column>
+        </table>
+        <table name="migrations">
+            <column name="id">9</column>
+            <column name="migration">2024_03_27_153512_add_role_to_users_table</column>
+            <column name="batch">5</column>
+        </table>
+        <table name="migrations">
+            <column name="id">10</column>
+            <column name="migration">2024_03_27_195131_create_commandes_table</column>
+            <column name="batch">6</column>
+        </table>
+        <table name="migrations">
+            <column name="id">11</column>
+            <column name="migration">2024_03_27_195348_create_produit_commandes_table</column>
+            <column name="batch">6</column>
+        </table>
+        <table name="migrations">
+            <column name="id">12</column>
+            <column name="migration">2024_03_27_195918_create_factures_table</column>
+            <column name="batch">6</column>
+        </table>
+        <table name="migrations">
+            <column name="id">13</column>
+            <column name="migration">2024_03_28_095718_add_quantite_to_produits_table</column>
+            <column name="batch">7</column>
+        </table>
+        <table name="migrations">
+            <column name="id">14</column>
+            <column name="migration">2024_03_28_095915_add_quantite_to_produit_commandes_table</column>
+            <column name="batch">7</column>
+        </table>
+        <table name="migrations">
+            <column name="id">15</column>
+            <column name="migration">2024_03_28_135234_add_file_path_to_factures_table</column>
+            <column name="batch">8</column>
+        </table>
+        <!-- Table password_resets -->
+        <!-- Table personal_access_tokens -->
+        <table name="personal_access_tokens">
+            <column name="id">2</column>
+            <column name="tokenable_type">App\Models\User</column>
+            <column name="tokenable_id">3</column>
+            <column name="name">appToken</column>
+            <column name="token">9f0207de09f4cc646618a3fd3da612be5cf0621bc92b3d13c977d40a91598e8f</column>
+            <column name="abilities">[&quot;*&quot;]</column>
+            <column name="last_used_at">2024-03-29 13:33:40</column>
+            <column name="created_at">2024-03-27 20:47:26</column>
+            <column name="updated_at">2024-03-29 13:33:40</column>
+        </table>
+        <!-- Table produits -->
+        <table name="produits">
+            <column name="id">1</column>
+            <column name="nom">Chemise en coton  à rayures</column>
+            <column name="description">Cette chemise en coton à rayures est un ajout élégant à votre garde-robe. Fabriquée à partir de coton doux et respirant, elle offre un confort toute la journée. Les rayures discrètes ajoutent une touche de sophistication à votre look, que ce soit pour une journée de travail ou une soirée décontractée entre amis.</column>
+            <column name="prix">135.00</column>
+            <column name="img_path">public/imagesProduits/660416d4b7321_SESSEI-esther-shirt-navy-stripes2.webp</column>
+            <column name="categorie_id">2</column>
+            <column name="created_at">2024-03-27 12:53:40</column>
+            <column name="updated_at">2024-03-28 10:16:43</column>
+            <column name="marque">sessei</column>
+            <column name="quantite">100</column>
+        </table>
+        <table name="produits">
+            <column name="id">3</column>
+            <column name="nom">Sac à dos en toile vintage</column>
+            <column name="description">Ce sac à dos en toile vintage est à la fois pratique et stylé. Fabriqué à partir de toile de haute qualité, il est durable et résistant à l'usure. Avec plusieurs compartiments et poches, il offre amplement d'espace pour ranger vos affaires essentielles. Parfait pour une utilisation quotidienne, que ce soit pour aller à l'école, au travail ou pour une aventure en plein air.</column>
+            <column name="prix">49.99</column>
+            <column name="img_path">NULL</column>
+            <column name="categorie_id">2</column>
+            <column name="created_at">2024-03-27 21:08:01</column>
+            <column name="updated_at">2024-03-28 10:17:01</column>
+            <column name="marque">Retro Urban</column>
+            <column name="quantite">50</column>
+        </table>
+        <table name="produits">
+            <column name="id">4</column>
+            <column name="nom">Robe maxi à fleurs</column>
+            <column name="description">Cette magnifique robe maxi à fleurs est parfaite pour les occasions spéciales ou pour une tenue décontractée élégante. Fabriquée à partir de tissu léger et fluide, elle offre un confort optimal tout en étant très féminine. Les motifs floraux apportent une touche de fraîcheur et de romantisme à votre look. Portez-la avec des sandales pour un style estival chic ou avec des talons pour une allure plus sophistiquée.</column>
+            <column name="prix">69.99</column>
+            <column name="img_path">NULL</column>
+            <column name="categorie_id">2</column>
+            <column name="created_at">2024-03-28 10:20:59</column>
+            <column name="updated_at">2024-03-28 10:20:59</column>
+            <column name="marque">Trendy Boutique</column>
+            <column name="quantite">70</column>
+        </table>
+        <table name="produits">
+            <column name="id">11</column>
+            <column name="nom">test</column>
+            <column name="description">test</column>
+            <column name="prix">99.00</column>
+            <column name="img_path">NULL</column>
+            <column name="categorie_id">2</column>
+            <column name="created_at">2024-03-29 13:33:40</column>
+            <column name="updated_at">2024-03-29 13:33:40</column>
+            <column name="marque">test</column>
+            <column name="quantite">1</column>
+        </table>
+        <!-- Table produit_commandes -->
+        <table name="produit_commandes">
+            <column name="commande_id">2</column>
+            <column name="produit_id">1</column>
+            <column name="created_at">2024-03-27 21:12:17</column>
+            <column name="updated_at">2024-03-27 21:12:17</column>
+            <column name="quantite">0</column>
+        </table>
+        <table name="produit_commandes">
+            <column name="commande_id">4</column>
+            <column name="produit_id">1</column>
+            <column name="created_at">2024-03-27 21:14:09</column>
+            <column name="updated_at">2024-03-27 21:14:09</column>
+            <column name="quantite">0</column>
+        </table>
+        <table name="produit_commandes">
+            <column name="commande_id">4</column>
+            <column name="produit_id">3</column>
+            <column name="created_at">2024-03-27 21:14:09</column>
+            <column name="updated_at">2024-03-27 21:14:09</column>
+            <column name="quantite">0</column>
+        </table>
+        <table name="produit_commandes">
+            <column name="commande_id">5</column>
+            <column name="produit_id">1</column>
+            <column name="created_at">2024-03-27 21:18:30</column>
+            <column name="updated_at">2024-03-27 21:18:30</column>
+            <column name="quantite">0</column>
+        </table>
+        <table name="produit_commandes">
+            <column name="commande_id">5</column>
+            <column name="produit_id">3</column>
+            <column name="created_at">2024-03-27 21:18:30</column>
+            <column name="updated_at">2024-03-27 21:18:30</column>
+            <column name="quantite">0</column>
+        </table>
+        <table name="produit_commandes">
+            <column name="commande_id">6</column>
+            <column name="produit_id">1</column>
+            <column name="created_at">2024-03-28 10:28:12</column>
+            <column name="updated_at">2024-03-28 10:28:12</column>
+            <column name="quantite">1</column>
+        </table>
+        <table name="produit_commandes">
+            <column name="commande_id">6</column>
+            <column name="produit_id">3</column>
+            <column name="created_at">2024-03-28 10:28:12</column>
+            <column name="updated_at">2024-03-28 10:28:12</column>
+            <column name="quantite">1</column>
+        </table>
+        <!-- Table users -->
+        <table name="users">
+            <column name="id">1</column>
+            <column name="name">lilia_lilia</column>
+            <column name="email">liliahadjimi20@gmail.com</column>
+            <column name="email_verified_at">NULL</column>
+            <column name="password">b56053f6b7679629745b4df1f79c30b2d17e6740c5b4abcd9df25b4fa80ae730</column>
+            <column name="remember_token">NULL</column>
+            <column name="created_at">2024-03-27 15:55:07</column>
+            <column name="updated_at">2024-03-27 15:55:07</column>
+            <column name="role">client</column>
+        </table>
+        <table name="users">
+            <column name="id">2</column>
+            <column name="name">lydia_lydia</column>
+            <column name="email">lydia.benzemrane@gmail.com</column>
+            <column name="email_verified_at">NULL</column>
+            <column name="password">76651a6514c16d2445afea20800e5323a57a03e61719a5f27544a02616160d79</column>
+            <column name="remember_token">NULL</column>
+            <column name="created_at">2024-03-27 16:03:44</column>
+            <column name="updated_at">2024-03-27 16:03:44</column>
+            <column name="role">client</column>
+        </table>
+        <table name="users">
+            <column name="id">3</column>
+            <column name="name">manel_manel</column>
+            <column name="email">ferchichimanel24@gmail.com</column>
+            <column name="email_verified_at">NULL</column>
+            <column name="password">4997d8fa95df792d0903a1ec904f3dd0448dcf2b5c9747d6456c3747c21bce36</column>
+            <column name="remember_token">NULL</column>
+            <column name="created_at">2024-03-27 16:14:53</column>
+            <column name="updated_at">2024-03-27 16:18:29</column>
+            <column name="role">client</column>
+        </table>
+    </database>
+</pma_xml_export>
